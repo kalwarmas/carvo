@@ -1,0 +1,804 @@
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --blue: #1a4a8a;
+  --blue-light: #e8f0fb;
+  --orange: #f07c1a;
+  --orange-light: #fff3e6;
+  --text: #1a1a2a;
+  --text2: #5a6070;
+  --text3: #9aa0b0;
+  --border: #e8eaf0;
+  --bg: #f7f8fc;
+  --white: #fff;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 2px 12px rgba(26, 74, 138, .10);
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--white);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ── SIDEBAR ── */
+.app{display:flex;min-height:100vh}
+.sidebar{width:220px;min-height:100vh;background:var(--blue);display:flex;flex-direction:column;padding:0;flex-shrink:0}
+.sb-logo{padding:20px 18px 16px;border-bottom:1px solid rgba(255,255,255,.12);display:flex;align-items:center;gap:10px}
+.sb-logo img{width:38px;height:38px;border-radius:10px;object-fit:cover;background:#fff}
+.sb-logo-text{color:#fff;font-size:18px;font-weight:700;letter-spacing:.5px}
+.sb-logo-tag{color:rgba(255,255,255,.55);font-size:10px;letter-spacing:1.2px;text-transform:uppercase}
+.sb-nav{flex:1;padding:12px 0}
+.sb-section{padding:8px 18px 4px;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.4);font-weight:600}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 18px;color:rgba(255,255,255,.75);cursor:pointer;border-radius:0;transition:all .18s;font-size:13.5px;border-left:3px solid transparent}
+.sb-item:hover{background:rgba(255,255,255,.09);color:#fff}
+.sb-item.active{background:rgba(255,255,255,.13);color:#fff;border-left-color:var(--orange);font-weight:600}
+.sb-item i{font-size:17px;width:20px;flex-shrink:0}
+.sb-badge{margin-left:auto;background:var(--orange);color:#fff;font-size:10px;font-weight:700;border-radius:20px;padding:1px 7px;min-width:18px;text-align:center}
+.sb-footer{padding:14px 18px;border-top:1px solid rgba(255,255,255,.12)}
+.sb-profile{display:flex;align-items:center;gap:9px;cursor:pointer}
+.sb-avatar{width:34px;height:34px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0}
+.sb-pname{color:#fff;font-size:13px;font-weight:600}
+.sb-role{color:rgba(255,255,255,.5);font-size:11px}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;background:var(--bg);overflow:hidden}
+.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:12px}
+.topbar-title{font-size:18px;font-weight:700;color:var(--text);flex:1}
+.topbar-city{display:flex;align-items:center;gap:6px;background:var(--blue-light);color:var(--blue);padding:6px 12px;border-radius:20px;font-size:12.5px;font-weight:600;cursor:pointer}
+.topbar-city i{font-size:14px}
+.topbar-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);font-size:17px;position:relative}
+.notif-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;background:var(--orange);border-radius:50%;border:2px solid #fff}
+.content{flex:1;padding:22px 24px;overflow-y:auto}
+
+/* ── SCREENS ── */
+.screen{display:none}
+.screen.active{display:block}
+
+/* ── CARDS / GRID ── */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.stat-card{background:var(--white);border-radius:var(--radius);padding:16px;border:1px solid var(--border);box-shadow:var(--shadow)}
+.stat-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:10px}
+.stat-icon.blue{background:var(--blue-light);color:var(--blue)}
+.stat-icon.orange{background:var(--orange-light);color:var(--orange)}
+.stat-icon.green{background:#e8f7ee;color:#1a7a3a}
+.stat-icon.red{background:#fdeaea;color:#c0392b}
+.stat-val{font-size:22px;font-weight:700;color:var(--text)}
+.stat-lbl{font-size:12px;color:var(--text2);margin-top:2px}
+.stat-trend{font-size:11px;margin-top:5px}
+.stat-trend.up{color:#1a7a3a}
+.stat-trend.dn{color:#c0392b}
+
+.card{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);padding:18px 20px;margin-bottom:16px}
+.card-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card-title i{color:var(--blue);font-size:17px}
+
+/* ── MAP AREA ── */
+.map-area{height:190px;border-radius:var(--radius);background:linear-gradient(135deg,#c8dff5 0%,#dceefa 40%,#b8d4f0 100%);position:relative;overflow:hidden;margin-bottom:16px;border:1px solid var(--border)}
+.map-road{position:absolute;bottom:50px;left:0;right:0;height:22px;background:rgba(255,255,255,.6);transform:skewY(-3deg)}
+.map-road2{position:absolute;bottom:30px;left:0;right:0;height:10px;background:rgba(255,255,255,.35);transform:skewY(-3deg)}
+.map-car{position:absolute;bottom:52px;left:38%;font-size:24px;transform:scaleX(-1)}
+.map-pin-a{position:absolute;top:30px;left:22%;color:var(--blue);font-size:22px}
+.map-pin-b{position:absolute;top:30px;right:22%;color:var(--orange);font-size:22px}
+.map-line{position:absolute;top:41px;left:calc(22% + 16px);right:calc(22% + 16px);height:2px;background:var(--blue);opacity:.45}
+.map-label{position:absolute;top:8px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.85);padding:4px 12px;border-radius:20px;font-size:11.5px;font-weight:600;color:var(--blue)}
+.map-eta{position:absolute;bottom:10px;right:12px;background:var(--orange);color:#fff;padding:4px 12px;border-radius:20px;font-size:11.5px;font-weight:700}
+
+/* ── FORM ── */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.form-group{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.form-group label{font-size:12px;font-weight:600;color:var(--text2)}
+.form-group input,.form-group select,.form-group textarea{border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 12px;font-size:13.5px;color:var(--text);background:var(--white);outline:none;transition:border .18s;font-family:inherit}
+.form-group input:focus,.form-group select:focus{border-color:var(--blue)}
+.form-group textarea{resize:vertical;min-height:70px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 20px;border-radius:var(--radius-sm);font-size:13.5px;font-weight:600;cursor:pointer;border:none;transition:all .18s}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{background:#153d75}
+.btn-orange{background:var(--orange);color:#fff}
+.btn-orange:hover{background:#d46a10}
+.btn-outline{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}
+.btn-outline:hover{background:var(--blue-light)}
+.btn-sm{padding:7px 14px;font-size:12.5px}
+.btn-block{width:100%}
+.btn i{font-size:16px}
+
+/* ── RIDE CARD ── */
+.ride-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:box-shadow .18s}
+.ride-card:hover{box-shadow:var(--shadow)}
+.ride-avatar{width:44px;height:44px;border-radius:50%;background:var(--blue-light);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.ride-info{flex:1}
+.ride-route{font-weight:700;font-size:13.5px;color:var(--text)}
+.ride-meta{font-size:12px;color:var(--text2);margin-top:2px;display:flex;align-items:center;gap:10px}
+.ride-meta i{font-size:13px;color:var(--text3)}
+.ride-price{font-size:16px;font-weight:800;color:var(--blue)}
+.ride-status{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600;margin-top:4px;display:inline-block}
+.status-active{background:#e8f7ee;color:#1a7a3a}
+.status-pending{background:var(--orange-light);color:#c05f00}
+.status-done{background:#f0f1f5;color:var(--text2)}
+
+/* ── PROFILE ── */
+.profile-header{background:linear-gradient(135deg,var(--blue) 60%,#2a6fd4 100%);border-radius:var(--radius);padding:24px 20px;display:flex;align-items:center;gap:18px;margin-bottom:16px}
+.profile-pic{width:68px;height:68px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:28px;color:#fff;border:3px solid rgba(255,255,255,.4);flex-shrink:0}
+.profile-name{color:#fff;font-size:20px;font-weight:800}
+.profile-sub{color:rgba(255,255,255,.7);font-size:12.5px;margin-top:3px}
+.verify-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.18);color:#fff;font-size:11px;padding:3px 10px;border-radius:20px;margin-top:8px}
+.verify-badge.verified{background:#1a7a3a;color:#fff}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:18px}
+.tab{padding:9px 18px;font-size:13px;font-weight:600;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .18s}
+.tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* ── WALLET ── */
+.wallet-hero{background:var(--blue);border-radius:var(--radius);padding:22px;margin-bottom:16px;position:relative;overflow:hidden}
+.wallet-hero::after{content:'';position:absolute;right:-20px;top:-20px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.07)}
+.wallet-lbl{color:rgba(255,255,255,.65);font-size:12px;letter-spacing:.5px;text-transform:uppercase;font-weight:600}
+.wallet-bal{color:#fff;font-size:32px;font-weight:800;margin:6px 0 14px}
+.wallet-sub{color:rgba(255,255,255,.6);font-size:12px}
+.wallet-actions{display:flex;gap:10px;flex-wrap:wrap}
+.wallet-btn{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25);padding:8px 16px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;transition:background .18s}
+.wallet-btn:hover{background:rgba(255,255,255,.25)}
+.txn-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border)}
+.txn-row:last-child{border:none}
+.txn-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.txn-name{font-size:13.5px;font-weight:600;color:var(--text)}
+.txn-date{font-size:11.5px;color:var(--text3)}
+.txn-amt{margin-left:auto;font-size:14px;font-weight:700}
+.txn-amt.cr{color:#1a7a3a}
+.txn-amt.dr{color:#c0392b}
+
+/* ── TYPE TOGGLE ── */
+.type-toggle{display:flex;background:var(--blue-light);border-radius:var(--radius-sm);padding:3px;gap:3px;margin-bottom:16px;width:fit-content}
+.type-btn{padding:7px 20px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all .18s;color:var(--blue)}
+.type-btn.active{background:var(--blue);color:#fff}
+
+/* ── START RIDE ── */
+.loc-input{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.loc-row{display:flex;align-items:center;gap:10px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px}
+.loc-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.loc-dot.a{background:var(--blue)}
+.loc-dot.b{background:var(--orange)}
+.loc-line{width:2px;height:20px;background:var(--border);margin:0 auto;margin-left:5px}
+.loc-input-field{flex:1;border:none;outline:none;font-size:13.5px;color:var(--text);font-family:inherit;background:transparent}
+
+/* ── SEAT SELECTOR ── */
+.seats{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.seat{width:36px;height:36px;border-radius:8px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;transition:all .18s}
+.seat:hover,.seat.sel{border-color:var(--blue);background:var(--blue-light);color:var(--blue)}
+
+/* ── BUSINESS ── */
+.biz-stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.chart-bar-wrap{display:flex;align-items:flex-end;gap:6px;height:110px;padding:0 4px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bar-fill{width:100%;border-radius:4px 4px 0 0;background:var(--blue);min-height:4px;transition:height .4s}
+.bar-lbl{font-size:10.5px;color:var(--text3)}
+
+/* ── GENDER / FILTER TAGS ── */
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.ftag{padding:5px 14px;border-radius:20px;font-size:12.5px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);color:var(--text2);transition:all .18s;display:flex;align-items:center;gap:5px}
+.ftag:hover,.ftag.active{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
+.ftag i{font-size:13px}
+
+/* ── VEHICLE CARD ── */
+.veh-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:6px}
+.veh-card{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:12px;text-align:center;cursor:pointer;transition:all .18s}
+.veh-card:hover,.veh-card.sel{border-color:var(--blue);background:var(--blue-light)}
+.veh-icon{font-size:28px;margin-bottom:6px}
+.veh-name{font-size:12px;font-weight:600;color:var(--text)}
+.veh-cap{font-size:11px;color:var(--text3)}
+
+/* ── VERIFY STEPS ── */
+.step-list{display:flex;flex-direction:column;gap:10px}
+.step-item{display:flex;align-items:center;gap:14px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius-sm);padding:13px 16px}
+.step-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.step-num.done{background:#e8f7ee;color:#1a7a3a}
+.step-num.active{background:var(--blue-light);color:var(--blue)}
+.step-num.todo{background:var(--bg);color:var(--text3)}
+.step-label{font-size:13.5px;font-weight:600;color:var(--text)}
+.step-sub{font-size:12px;color:var(--text2);margin-top:2px}
+.step-cta{margin-left:auto}
+
+/* ── LOGIN SCREEN ── */
+.auth-wrap{max-width:400px;margin:40px auto}
+.auth-logo{text-align:center;margin-bottom:24px}
+.auth-logo-img{width:64px;height:64px;border-radius:18px;background:var(--blue);display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:28px;font-weight:800;margin-bottom:10px}
+.auth-logo-img img{width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block}
+.auth-title{font-size:22px;font-weight:800;color:var(--text)}
+.auth-sub{font-size:13px;color:var(--text2);margin-top:4px}
+.divider{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--text3);font-size:12px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.social-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:10px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--white);font-size:13.5px;font-weight:600;cursor:pointer;color:var(--text);margin-bottom:8px;font-family:inherit}
+.social-btn:hover{background:var(--bg)}
+
+/* ── NOTIFICATION DOT ── */
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.section-head-title{font-size:15px;font-weight:700;color:var(--text)}
+.see-all{font-size:12.5px;color:var(--blue);font-weight:600;cursor:pointer}
+
+/* ── CITY PICKER ── */
+.city-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.city-card{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:12px 8px;text-align:center;cursor:pointer;transition:all .18s}
+.city-card:hover,.city-card.sel{border-color:var(--blue);background:var(--blue-light)}
+.city-emoji{font-size:22px;margin-bottom:5px}
+.city-name{font-size:12.5px;font-weight:600;color:var(--text)}
+
+/* ── PROGRESS RING ── */
+.rating-row{display:flex;align-items:center;gap:16px}
+.rating-big{font-size:36px;font-weight:800;color:var(--blue)}
+.stars{color:var(--orange);font-size:16px;letter-spacing:2px}
+.rating-count{font-size:12px;color:var(--text3);margin-top:2px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:700px){
+  .sidebar{width:56px}.sb-item span,.sb-logo-text,.sb-logo-tag,.sb-pname,.sb-role,.sb-section{display:none}
+  .sb-item{padding:12px;justify-content:center}.sb-badge{display:none}
+  .stat-grid{grid-template-columns:1fr 1fr}.biz-stat-grid{grid-template-columns:1fr 1fr}
+  .veh-grid{grid-template-columns:1fr 1fr}.city-grid{grid-template-columns:repeat(3,1fr)}
+  .form-row{grid-template-columns:1fr}
+}
+</style>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+<nav class="sidebar" aria-label="Main navigation">
+  <div class="sb-logo">
+    <img src="logo.png" alt="Carvo logo" style="width:38px;height:38px;border-radius:10px;object-fit:cover;background:#fff;flex-shrink:0">
+    <div><div class="sb-logo-text">Carvo</div><div class="sb-logo-tag">Carpool · Travel · Share</div></div>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-section">Main</div>
+    <div class="sb-item active" onclick="nav('dashboard',this)"><i class="ti ti-layout-dashboard" aria-hidden="true"></i><span>Dashboard</span></div>
+    <div class="sb-item" onclick="nav('find',this)"><i class="ti ti-search" aria-hidden="true"></i><span>Find a Ride</span></div>
+    <div class="sb-item" onclick="nav('start',this)"><i class="ti ti-car" aria-hidden="true"></i><span>Start Ride</span></div>
+    <div class="sb-item" onclick="nav('myrides',this)"><i class="ti ti-route" aria-hidden="true"></i><span>My Rides</span><span class="sb-badge">2</span></div>
+    <div class="sb-section">Account</div>
+    <div class="sb-item" onclick="nav('wallet',this)"><i class="ti ti-wallet" aria-hidden="true"></i><span>Wallet</span></div>
+    <div class="sb-item" onclick="nav('business',this)"><i class="ti ti-chart-bar" aria-hidden="true"></i><span>Business</span></div>
+    <div class="sb-item" onclick="nav('verify',this)"><i class="ti ti-shield-check" aria-hidden="true"></i><span>Verify Profile</span></div>
+    <div class="sb-item" onclick="nav('profile',this)"><i class="ti ti-user-circle" aria-hidden="true"></i><span>My Profile</span></div>
+    <div class="sb-section">More</div>
+    <div class="sb-item" onclick="nav('login',this)"><i class="ti ti-login" aria-hidden="true"></i><span>Login / Register</span></div>
+  </div>
+  <div class="sb-footer">
+    <div class="sb-profile" onclick="nav('profile',document.querySelector('.sb-item:nth-child(1)'))">
+      <div class="sb-avatar">MA</div>
+      <div><div class="sb-pname">Masroor</div><div class="sb-role">Driver</div></div>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-title" id="page-title">Dashboard</div>
+    <div class="topbar-city" onclick="nav('find',null)"><i class="ti ti-map-pin" aria-hidden="true"></i> Karachi, Pakistan</div>
+    <div class="topbar-btn" style="position:relative"><i class="ti ti-bell" aria-hidden="true"></i><div class="notif-dot"></div></div>
+    <div class="topbar-btn"><i class="ti ti-settings" aria-hidden="true"></i></div>
+  </div>
+
+  <div class="content">
+
+    <!-- ═══ DASHBOARD ═══ -->
+    <div id="screen-dashboard" class="screen active">
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-icon blue"><i class="ti ti-car" aria-hidden="true"></i></div><div class="stat-val">24</div><div class="stat-lbl">Total Rides</div><div class="stat-trend up"><i class="ti ti-trending-up"></i> +3 this week</div></div>
+        <div class="stat-card"><div class="stat-icon orange"><i class="ti ti-wallet" aria-hidden="true"></i></div><div class="stat-val">Rs 4,850</div><div class="stat-lbl">Wallet Balance</div><div class="stat-trend up"><i class="ti ti-trending-up"></i> +Rs 200 today</div></div>
+        <div class="stat-card"><div class="stat-icon green"><i class="ti ti-star" aria-hidden="true"></i></div><div class="stat-val">4.8</div><div class="stat-lbl">Your Rating</div><div class="stat-trend up">Based on 18 reviews</div></div>
+        <div class="stat-card"><div class="stat-icon red"><i class="ti ti-leaf" aria-hidden="true"></i></div><div class="stat-val">12 kg</div><div class="stat-lbl">CO₂ Saved</div><div class="stat-trend up">Keep it up!</div></div>
+      </div>
+
+      <!-- MAP -->
+      <div class="section-head"><div class="section-head-title"><i class="ti ti-map" style="color:var(--blue);margin-right:6px" aria-hidden="true"></i>Live Map</div><span class="see-all">Expand</span></div>
+      <div class="map-area">
+        <div class="map-road"></div><div class="map-road2"></div>
+        <div class="map-car">🚗</div>
+        <div class="map-pin-a"><i class="ti ti-map-pin-filled" aria-hidden="true"></i></div>
+        <div class="map-pin-b"><i class="ti ti-map-pin-filled" aria-hidden="true"></i></div>
+        <div class="map-line"></div>
+        <div class="map-label">Gulshan → Clifton</div>
+        <div class="map-eta">ETA 14 min</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <!-- Quick Book -->
+        <div class="card">
+          <div class="card-title"><i class="ti ti-bolt" aria-hidden="true"></i>Quick Book</div>
+          <div class="loc-input">
+            <div class="loc-row"><div class="loc-dot a"></div><input class="loc-input-field" placeholder="Pickup location..." value="Gulshan-e-Iqbal"></div>
+            <div class="loc-line" style="margin-left:5px;width:2px;height:12px;background:var(--border)"></div>
+            <div class="loc-row"><div class="loc-dot b"></div><input class="loc-input-field" placeholder="Drop location..." value="Clifton Block 5"></div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-primary btn-sm" onclick="nav('find',null)" style="flex:1"><i class="ti ti-search" aria-hidden="true"></i>Find Ride</button>
+            <button class="btn btn-orange btn-sm" onclick="nav('start',null)" style="flex:1"><i class="ti ti-car" aria-hidden="true"></i>Offer Ride</button>
+          </div>
+        </div>
+        <!-- Recent Activity -->
+        <div class="card">
+          <div class="card-title"><i class="ti ti-history" aria-hidden="true"></i>Recent Activity</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:10px;font-size:12.5px"><div style="width:8px;height:8px;border-radius:50%;background:#1a7a3a;flex-shrink:0"></div><div style="flex:1;color:var(--text)">Gulshan → DHA, completed</div><div style="color:var(--text3)">Today</div></div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:12.5px"><div style="width:8px;height:8px;border-radius:50%;background:var(--orange);flex-shrink:0"></div><div style="flex:1;color:var(--text)">Saddar → Nazimabad, active</div><div style="color:var(--text3)">Now</div></div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:12.5px"><div style="width:8px;height:8px;border-radius:50%;background:var(--border);flex-shrink:0"></div><div style="flex:1;color:var(--text)">Malir → Karachi Univ</div><div style="color:var(--text3)">Yesterday</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upcoming rides -->
+      <div class="section-head" style="margin-top:4px"><div class="section-head-title"><i class="ti ti-clock" style="color:var(--blue);margin-right:6px" aria-hidden="true"></i>Upcoming Rides</div><span class="see-all" onclick="nav('myrides',null)">See all</span></div>
+      <div class="ride-card" onclick="nav('myrides',null)">
+        <div class="ride-avatar"><i class="ti ti-car" style="font-size:22px;color:var(--blue)" aria-hidden="true"></i></div>
+        <div class="ride-info"><div class="ride-route">Gulshan-e-Iqbal → MAJU</div><div class="ride-meta"><i class="ti ti-clock" aria-hidden="true"></i>8:30 AM &nbsp;<i class="ti ti-users" aria-hidden="true"></i>2 seats &nbsp;<i class="ti ti-map-pin" aria-hidden="true"></i>12 km</div><span class="ride-status status-active">Confirmed</span></div>
+        <div style="text-align:right"><div class="ride-price">Rs 180</div><div style="font-size:11px;color:var(--text3);margin-top:2px">per seat</div></div>
+      </div>
+      <div class="ride-card" onclick="nav('myrides',null)">
+        <div class="ride-avatar"><i class="ti ti-user" style="font-size:22px;color:var(--orange)" aria-hidden="true"></i></div>
+        <div class="ride-info"><div class="ride-route">DHA Phase 2 → Clifton</div><div class="ride-meta"><i class="ti ti-clock" aria-hidden="true"></i>5:45 PM &nbsp;<i class="ti ti-users" aria-hidden="true"></i>1 seat &nbsp;<i class="ti ti-map-pin" aria-hidden="true"></i>8 km</div><span class="ride-status status-pending">Pending</span></div>
+        <div style="text-align:right"><div class="ride-price">Rs 120</div><div style="font-size:11px;color:var(--text3);margin-top:2px">per seat</div></div>
+      </div>
+    </div>
+
+    <!-- ═══ FIND A RIDE ═══ -->
+    <div id="screen-find" class="screen">
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-title"><i class="ti ti-search" aria-hidden="true"></i>Find Available Rides</div>
+        <div class="form-row">
+          <div class="form-group" style="margin:0"><label>From</label><input value="Gulshan-e-Iqbal"></div>
+          <div class="form-group" style="margin:0"><label>To</label><input value="Clifton Block 5"></div>
+        </div>
+        <div class="form-row" style="margin-top:10px">
+          <div class="form-group" style="margin:0"><label>Date</label><input type="date" value="2025-05-24"></div>
+          <div class="form-group" style="margin:0"><label>Time</label><input type="time" value="08:30"></div>
+        </div>
+        <div style="margin-top:10px;margin-bottom:12px">
+          <label style="font-size:12px;font-weight:600;color:var(--text2);display:block;margin-bottom:6px">Filters</label>
+          <div class="filter-row">
+            <div class="ftag active" onclick="toggle(this)"><i class="ti ti-gender-male" aria-hidden="true"></i>Male Driver</div>
+            <div class="ftag" onclick="toggle(this)"><i class="ti ti-gender-female" aria-hidden="true"></i>Female Driver</div>
+            <div class="ftag" onclick="toggle(this)"><i class="ti ti-car" aria-hidden="true"></i>Car</div>
+            <div class="ftag" onclick="toggle(this)"><i class="ti ti-motorbike" aria-hidden="true"></i>Bike</div>
+            <div class="ftag" onclick="toggle(this)"><i class="ti ti-bus" aria-hidden="true"></i>Van</div>
+            <div class="ftag" onclick="toggle(this)"><i class="ti ti-air-conditioning" aria-hidden="true"></i>AC</div>
+            <div class="ftag" onclick="toggle(this)"><i class="ti ti-briefcase" aria-hidden="true"></i>Business</div>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-block"><i class="ti ti-search" aria-hidden="true"></i>Search Rides</button>
+      </div>
+
+      <div class="section-head"><div class="section-head-title">5 rides found</div><span class="see-all">Sort by price</span></div>
+
+      <div class="ride-card">
+        <div class="ride-avatar" style="background:#fdeaea;font-size:18px;font-weight:700;color:#c0392b">AA</div>
+        <div class="ride-info">
+          <div class="ride-route">Gulshan → Clifton</div>
+          <div class="ride-meta"><i class="ti ti-clock" aria-hidden="true"></i>8:30 AM &nbsp;<i class="ti ti-users" aria-hidden="true"></i>3 seats &nbsp;<i class="ti ti-car" aria-hidden="true"></i>Suzuki Alto</div>
+          <div style="display:flex;gap:6px;margin-top:4px"><span class="ride-status status-active">Verified</span><span class="ftag active" style="padding:2px 8px;font-size:11px;border-radius:20px"><i class="ti ti-gender-female" aria-hidden="true"></i>Female</span></div>
+        </div>
+        <div style="text-align:right"><div class="ride-price">Rs 150</div><button class="btn btn-orange btn-sm" style="margin-top:6px">Book</button></div>
+      </div>
+
+      <div class="ride-card">
+        <div class="ride-avatar" style="background:var(--blue-light);font-size:18px;font-weight:700;color:var(--blue)">KH</div>
+        <div class="ride-info">
+          <div class="ride-route">Gulshan → Clifton</div>
+          <div class="ride-meta"><i class="ti ti-clock" aria-hidden="true"></i>9:00 AM &nbsp;<i class="ti ti-users" aria-hidden="true"></i>2 seats &nbsp;<i class="ti ti-car" aria-hidden="true"></i>Toyota Corolla</div>
+          <div style="display:flex;gap:6px;margin-top:4px"><span class="ride-status status-active">Verified</span><span class="ftag active" style="padding:2px 8px;font-size:11px;border-radius:20px;border-color:var(--blue)"><i class="ti ti-air-conditioning" aria-hidden="true"></i>AC</span></div>
+        </div>
+        <div style="text-align:right"><div class="ride-price">Rs 200</div><button class="btn btn-orange btn-sm" style="margin-top:6px">Book</button></div>
+      </div>
+
+      <div class="ride-card">
+        <div class="ride-avatar" style="background:#e8f7ee;font-size:18px;font-weight:700;color:#1a7a3a">MF</div>
+        <div class="ride-info">
+          <div class="ride-route">Gulshan → Clifton</div>
+          <div class="ride-meta"><i class="ti ti-clock" aria-hidden="true"></i>9:30 AM &nbsp;<i class="ti ti-users" aria-hidden="true"></i>1 seat &nbsp;<i class="ti ti-car" aria-hidden="true"></i>Honda City</div>
+          <div style="display:flex;gap:6px;margin-top:4px"><span class="ride-status status-active">Verified</span><span class="ftag active" style="padding:2px 8px;font-size:11px;border-radius:20px;border-color:#1a7a3a;color:#1a7a3a;background:#e8f7ee"><i class="ti ti-briefcase" aria-hidden="true"></i>Business</span></div>
+        </div>
+        <div style="text-align:right"><div class="ride-price">Rs 250</div><button class="btn btn-orange btn-sm" style="margin-top:6px">Book</button></div>
+      </div>
+    </div>
+
+    <!-- ═══ START RIDE ═══ -->
+    <div id="screen-start" class="screen">
+      <div class="type-toggle">
+        <div class="type-btn active" onclick="switchType(this,'driver')"><i class="ti ti-car" aria-hidden="true"></i> I'm a Driver</div>
+        <div class="type-btn" onclick="switchType(this,'rider')"><i class="ti ti-user" aria-hidden="true"></i> I Need a Ride</div>
+      </div>
+
+      <div id="driver-form">
+        <div class="card">
+          <div class="card-title"><i class="ti ti-map-pin" aria-hidden="true"></i>Route Details</div>
+          <div class="loc-input">
+            <div class="loc-row"><div class="loc-dot a"></div><input class="loc-input-field" placeholder="Pickup point (e.g. Gulshan-e-Iqbal)"></div>
+            <div style="margin-left:5px;width:2px;height:10px;background:var(--border)"></div>
+            <div class="loc-row"><div class="loc-dot b"></div><input class="loc-input-field" placeholder="Drop point (e.g. Clifton)"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group" style="margin:0"><label>Date</label><input type="date"></div>
+            <div class="form-group" style="margin:0"><label>Departure Time</label><input type="time" value="08:00"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><i class="ti ti-car" aria-hidden="true"></i>Vehicle & Seats</div>
+          <div class="form-group"><label>Vehicle Type</label></div>
+          <div class="veh-grid">
+            <div class="veh-card sel" onclick="selVeh(this)"><div class="veh-icon">🚗</div><div class="veh-name">Car</div><div class="veh-cap">Up to 4</div></div>
+            <div class="veh-card" onclick="selVeh(this)"><div class="veh-icon">🏍️</div><div class="veh-name">Bike</div><div class="veh-cap">1 pillion</div></div>
+            <div class="veh-card" onclick="selVeh(this)"><div class="veh-icon">🚐</div><div class="veh-name">Van</div><div class="veh-cap">Up to 8</div></div>
+          </div>
+          <div class="form-group" style="margin-top:12px"><label>Available Seats</label>
+            <div class="seats">
+              <div class="seat sel" onclick="selSeat(this)">1</div>
+              <div class="seat" onclick="selSeat(this)">2</div>
+              <div class="seat" onclick="selSeat(this)">3</div>
+              <div class="seat" onclick="selSeat(this)">4</div>
+            </div>
+          </div>
+          <div class="form-group"><label>Price per Seat (Rs)</label><input type="number" value="180" min="50"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><i class="ti ti-adjustments" aria-hidden="true"></i>Preferences</div>
+          <div class="form-group"><label>Ride Type</label>
+            <div class="filter-row" style="margin:6px 0 0">
+              <div class="ftag active" onclick="toggle(this)"><i class="ti ti-users" aria-hidden="true"></i>Mixed</div>
+              <div class="ftag" onclick="toggle(this)"><i class="ti ti-gender-male" aria-hidden="true"></i>Male Only</div>
+              <div class="ftag" onclick="toggle(this)"><i class="ti ti-gender-female" aria-hidden="true"></i>Female Only</div>
+              <div class="ftag" onclick="toggle(this)"><i class="ti ti-briefcase" aria-hidden="true"></i>Business</div>
+            </div>
+          </div>
+          <div class="form-group"><label>City</label>
+            <select><option>Karachi</option><option>Lahore</option><option>Islamabad</option><option>Rawalpindi</option><option>Peshawar</option><option>Quetta</option><option>Faisalabad</option><option>Multan</option></select>
+          </div>
+          <div class="form-group"><label>Additional Notes (optional)</label><textarea placeholder="e.g. No smoking, music allowed..."></textarea></div>
+          <button class="btn btn-orange btn-block" style="font-size:14px;padding:12px"><i class="ti ti-car" aria-hidden="true"></i>Publish Ride</button>
+        </div>
+      </div>
+
+      <div id="rider-form" class="hidden">
+        <div class="card">
+          <div class="card-title"><i class="ti ti-map-pin" aria-hidden="true"></i>Where do you want to go?</div>
+          <div class="loc-input">
+            <div class="loc-row"><div class="loc-dot a"></div><input class="loc-input-field" placeholder="Your pickup location"></div>
+            <div style="margin-left:5px;width:2px;height:10px;background:var(--border)"></div>
+            <div class="loc-row"><div class="loc-dot b"></div><input class="loc-input-field" placeholder="Your destination"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group" style="margin:0"><label>Date</label><input type="date"></div>
+            <div class="form-group" style="margin:0"><label>Preferred Time</label><input type="time" value="08:00"></div>
+          </div>
+          <div class="form-group"><label>Seats Needed</label>
+            <div class="seats"><div class="seat sel" onclick="selSeat(this)">1</div><div class="seat" onclick="selSeat(this)">2</div><div class="seat" onclick="selSeat(this)">3</div></div>
+          </div>
+          <div class="form-group"><label>Preferred Driver Gender</label>
+            <div class="filter-row" style="margin:6px 0 0">
+              <div class="ftag active" onclick="toggle(this)">No preference</div>
+              <div class="ftag" onclick="toggle(this)"><i class="ti ti-gender-male" aria-hidden="true"></i>Male</div>
+              <div class="ftag" onclick="toggle(this)"><i class="ti ti-gender-female" aria-hidden="true"></i>Female</div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-block" style="font-size:14px;padding:12px"><i class="ti ti-search" aria-hidden="true"></i>Find My Ride</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ MY RIDES ═══ -->
+    <div id="screen-myrides" class="screen">
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab(this,'tab-upcoming')">Upcoming</div>
+        <div class="tab" onclick="switchTab(this,'tab-active')">Active</div>
+        <div class="tab" onclick="switchTab(this,'tab-history')">History</div>
+      </div>
+      <div id="tab-upcoming" class="tab-panel active">
+        <div class="ride-card"><div class="ride-avatar"><i class="ti ti-car" style="font-size:22px;color:var(--blue)" aria-hidden="true"></i></div><div class="ride-info"><div class="ride-route">Gulshan-e-Iqbal → MAJU</div><div class="ride-meta"><i class="ti ti-calendar" aria-hidden="true"></i>24 May &nbsp;<i class="ti ti-clock" aria-hidden="true"></i>8:30 AM &nbsp;<i class="ti ti-users" aria-hidden="true"></i>2 seats</div><span class="ride-status status-active">Confirmed</span></div><div style="text-align:right"><div class="ride-price">Rs 360</div><button class="btn btn-outline btn-sm" style="margin-top:6px">Details</button></div></div>
+        <div class="ride-card"><div class="ride-avatar"><i class="ti ti-user" style="font-size:22px;color:var(--orange)" aria-hidden="true"></i></div><div class="ride-info"><div class="ride-route">DHA Phase 2 → Clifton</div><div class="ride-meta"><i class="ti ti-calendar" aria-hidden="true"></i>25 May &nbsp;<i class="ti ti-clock" aria-hidden="true"></i>5:45 PM &nbsp;<i class="ti ti-users" aria-hidden="true"></i>1 seat</div><span class="ride-status status-pending">Awaiting driver</span></div><div style="text-align:right"><div class="ride-price">Rs 120</div><button class="btn btn-outline btn-sm" style="margin-top:6px">Cancel</button></div></div>
+      </div>
+      <div id="tab-active" class="tab-panel">
+        <div class="map-area" style="height:160px"><div class="map-road"></div><div class="map-road2"></div><div class="map-car">🚗</div><div class="map-label">Ride in Progress</div><div class="map-eta">4 km left</div></div>
+        <div class="ride-card"><div class="ride-avatar" style="background:#e8f7ee;color:#1a7a3a;font-size:18px;font-weight:700">ZK</div><div class="ride-info"><div class="ride-route">Saddar → Nazimabad</div><div class="ride-meta"><i class="ti ti-car" aria-hidden="true"></i>Honda Civic &nbsp;<i class="ti ti-clock" aria-hidden="true"></i>Started 3:10 PM</div><span class="ride-status status-active">Active</span></div><div style="text-align:right"><div class="ride-price">Rs 200</div><button class="btn btn-orange btn-sm" style="margin-top:6px">Track</button></div></div>
+      </div>
+      <div id="tab-history" class="tab-panel">
+        <div class="ride-card"><div class="ride-avatar" style="background:var(--bg);color:var(--text3);font-size:18px;font-weight:700">JK</div><div class="ride-info"><div class="ride-route">Gulshan → DHA</div><div class="ride-meta"><i class="ti ti-calendar" aria-hidden="true"></i>22 May &nbsp;<i class="ti ti-clock" aria-hidden="true"></i>8:00 AM</div><span class="ride-status status-done">Completed</span></div><div style="text-align:right"><div style="font-size:14px;font-weight:700;color:var(--text)">Rs 220</div><div class="stars" style="font-size:13px;margin-top:4px">★★★★★</div></div></div>
+        <div class="ride-card"><div class="ride-avatar" style="background:var(--bg);color:var(--text3);font-size:18px;font-weight:700">AH</div><div class="ride-info"><div class="ride-route">Malir → KU Campus</div><div class="ride-meta"><i class="ti ti-calendar" aria-hidden="true"></i>21 May &nbsp;<i class="ti ti-clock" aria-hidden="true"></i>9:15 AM</div><span class="ride-status status-done">Completed</span></div><div style="text-align:right"><div style="font-size:14px;font-weight:700;color:var(--text)">Rs 180</div><div class="stars" style="font-size:13px;margin-top:4px">★★★★☆</div></div></div>
+      </div>
+    </div>
+
+    <!-- ═══ WALLET ═══ -->
+    <div id="screen-wallet" class="screen">
+      <div class="wallet-hero">
+        <div class="wallet-lbl">Total Balance</div>
+        <div class="wallet-bal">Rs 4,850</div>
+        <div class="wallet-sub">Carvo Wallet · Active since March 2025</div>
+        <div class="wallet-actions" style="margin-top:14px">
+          <div class="wallet-btn"><i class="ti ti-plus" aria-hidden="true"></i>Top Up</div>
+          <div class="wallet-btn"><i class="ti ti-arrow-up-right" aria-hidden="true"></i>Withdraw</div>
+          <div class="wallet-btn"><i class="ti ti-arrows-exchange" aria-hidden="true"></i>Transfer</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+        <div class="stat-card" style="padding:12px"><div class="stat-lbl">Earned (rides)</div><div style="font-size:18px;font-weight:700;color:#1a7a3a;margin-top:4px">Rs 12,400</div></div>
+        <div class="stat-card" style="padding:12px"><div class="stat-lbl">Spent (rides)</div><div style="font-size:18px;font-weight:700;color:var(--blue);margin-top:4px">Rs 7,550</div></div>
+        <div class="stat-card" style="padding:12px"><div class="stat-lbl">Pending</div><div style="font-size:18px;font-weight:700;color:var(--orange);margin-top:4px">Rs 320</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><i class="ti ti-list" aria-hidden="true"></i>Transactions</div>
+        <div class="tabs" style="margin-bottom:12px;border-bottom:1px solid var(--border)">
+          <div class="tab active" onclick="switchTab(this,'twallet-all')" style="padding:6px 14px;font-size:12.5px">All</div>
+          <div class="tab" onclick="switchTab(this,'twallet-cr')" style="padding:6px 14px;font-size:12.5px">Credits</div>
+          <div class="tab" onclick="switchTab(this,'twallet-dr')" style="padding:6px 14px;font-size:12.5px">Debits</div>
+        </div>
+        <div id="twallet-all" class="tab-panel active">
+          <div class="txn-row"><div class="txn-icon" style="background:#e8f7ee;color:#1a7a3a"><i class="ti ti-car" aria-hidden="true"></i></div><div><div class="txn-name">Ride: Gulshan → DHA</div><div class="txn-date">22 May 2025, 8:00 AM</div></div><div class="txn-amt cr">+Rs 220</div></div>
+          <div class="txn-row"><div class="txn-icon" style="background:var(--orange-light);color:var(--orange)"><i class="ti ti-credit-card" aria-hidden="true"></i></div><div><div class="txn-name">Top Up via JazzCash</div><div class="txn-date">20 May 2025, 2:30 PM</div></div><div class="txn-amt cr">+Rs 500</div></div>
+          <div class="txn-row"><div class="txn-icon" style="background:#fdeaea;color:#c0392b"><i class="ti ti-car" aria-hidden="true"></i></div><div><div class="txn-name">Booked: Malir → KU</div><div class="txn-date">21 May 2025, 9:15 AM</div></div><div class="txn-amt dr">−Rs 180</div></div>
+          <div class="txn-row"><div class="txn-icon" style="background:var(--blue-light);color:var(--blue)"><i class="ti ti-gift" aria-hidden="true"></i></div><div><div class="txn-name">Referral Bonus</div><div class="txn-date">18 May 2025</div></div><div class="txn-amt cr">+Rs 50</div></div>
+        </div>
+        <div id="twallet-cr" class="tab-panel"><div class="txn-row"><div class="txn-icon" style="background:#e8f7ee;color:#1a7a3a"><i class="ti ti-car" aria-hidden="true"></i></div><div><div class="txn-name">Ride: Gulshan → DHA</div><div class="txn-date">22 May 2025</div></div><div class="txn-amt cr">+Rs 220</div></div><div class="txn-row"><div class="txn-icon" style="background:var(--orange-light);color:var(--orange)"><i class="ti ti-credit-card" aria-hidden="true"></i></div><div><div class="txn-name">Top Up via JazzCash</div><div class="txn-date">20 May 2025</div></div><div class="txn-amt cr">+Rs 500</div></div></div>
+        <div id="twallet-dr" class="tab-panel"><div class="txn-row"><div class="txn-icon" style="background:#fdeaea;color:#c0392b"><i class="ti ti-car" aria-hidden="true"></i></div><div><div class="txn-name">Booked: Malir → KU</div><div class="txn-date">21 May 2025</div></div><div class="txn-amt dr">−Rs 180</div></div></div>
+      </div>
+    </div>
+
+    <!-- ═══ BUSINESS ═══ -->
+    <div id="screen-business" class="screen">
+      <div class="biz-stat-grid">
+        <div class="stat-card"><div class="stat-icon orange"><i class="ti ti-cash" aria-hidden="true"></i></div><div class="stat-val">Rs 12,400</div><div class="stat-lbl">Total Earnings</div><div class="stat-trend up"><i class="ti ti-trending-up"></i> +18% this month</div></div>
+        <div class="stat-card"><div class="stat-icon blue"><i class="ti ti-route" aria-hidden="true"></i></div><div class="stat-val">24</div><div class="stat-lbl">Rides Given</div><div class="stat-trend up">3 this week</div></div>
+        <div class="stat-card"><div class="stat-icon green"><i class="ti ti-star" aria-hidden="true"></i></div><div class="stat-val">4.8 / 5</div><div class="stat-lbl">Avg Rating</div><div class="stat-trend up">18 reviews</div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="card">
+          <div class="card-title"><i class="ti ti-chart-bar" aria-hidden="true"></i>Weekly Earnings</div>
+          <div class="chart-bar-wrap" id="bar-chart"></div>
+          <div style="display:flex;gap:4px;margin-top:6px" id="bar-labels"></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-target" aria-hidden="true"></i>This Month</div>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:13px">
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="color:var(--text2)">Revenue goal</span><span style="font-weight:700;color:var(--blue)">Rs 15,000</span></div>
+            <div style="background:var(--bg);border-radius:6px;height:8px;overflow:hidden"><div style="width:82%;height:100%;background:var(--blue);border-radius:6px"></div></div>
+            <div style="font-size:12px;color:var(--text3)">82% achieved — Rs 12,400 / Rs 15,000</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px"><span style="color:var(--text2)">Rides goal</span><span style="font-weight:700;color:var(--orange)">30 rides</span></div>
+            <div style="background:var(--bg);border-radius:6px;height:8px;overflow:hidden"><div style="width:80%;height:100%;background:var(--orange);border-radius:6px"></div></div>
+            <div style="font-size:12px;color:var(--text3)">80% achieved — 24 / 30 rides</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><i class="ti ti-briefcase" aria-hidden="true"></i>Business Rides</div>
+        <div style="font-size:13px;color:var(--text2);margin-bottom:10px">Offer premium, scheduled rides for offices and corporate clients.</div>
+        <div class="filter-row">
+          <div class="ftag active" onclick="toggle(this)"><i class="ti ti-building" aria-hidden="true"></i>Registered</div>
+          <div class="ftag" onclick="toggle(this)"><i class="ti ti-calendar-event" aria-hidden="true"></i>Recurring Routes</div>
+          <div class="ftag" onclick="toggle(this)"><i class="ti ti-file-invoice" aria-hidden="true"></i>Invoicing</div>
+        </div>
+        <button class="btn btn-primary" style="margin-top:8px"><i class="ti ti-plus" aria-hidden="true"></i>Add Corporate Route</button>
+      </div>
+    </div>
+
+    <!-- ═══ VERIFY PROFILE ═══ -->
+    <div id="screen-verify" class="screen">
+      <div class="card">
+        <div class="card-title"><i class="ti ti-shield-check" aria-hidden="true"></i>Profile Verification</div>
+        <div style="font-size:13px;color:var(--text2);margin-bottom:14px">Complete all steps to get your <strong>Verified Badge</strong> and unlock more ride requests.</div>
+        <div class="step-list">
+          <div class="step-item"><div class="step-num done"><i class="ti ti-check" aria-hidden="true"></i></div><div><div class="step-label">Email Verification</div><div class="step-sub">kalwarmas@gmail.com confirmed</div></div><span class="step-cta ride-status status-active">Done</span></div>
+          <div class="step-item"><div class="step-num done"><i class="ti ti-check" aria-hidden="true"></i></div><div><div class="step-label">Phone Verification</div><div class="step-sub">03023269118 confirmed via OTP</div></div><span class="step-cta ride-status status-active">Done</span></div>
+          <div class="step-item"><div class="step-num active">3</div><div><div class="step-label">CNIC Upload</div><div class="step-sub">Upload front & back of your CNIC</div></div><button class="btn btn-outline btn-sm step-cta">Upload</button></div>
+          <div class="step-item"><div class="step-num todo">4</div><div><div class="step-label">Selfie Verification</div><div class="step-sub">Take a live selfie to confirm identity</div></div><button class="btn btn-outline btn-sm step-cta" disabled style="opacity:.4">Pending</button></div>
+          <div class="step-item"><div class="step-num todo">5</div><div><div class="step-label">Vehicle Registration</div><div class="step-sub">Upload your vehicle documents (drivers only)</div></div><button class="btn btn-outline btn-sm step-cta" disabled style="opacity:.4">Pending</button></div>
+          <div class="step-item"><div class="step-num todo">6</div><div><div class="step-label">Driving License</div><div class="step-sub">Upload a clear photo of your license</div></div><button class="btn btn-outline btn-sm step-cta" disabled style="opacity:.4">Pending</button></div>
+        </div>
+        <div style="background:var(--orange-light);border-radius:var(--radius-sm);padding:12px;margin-top:14px;font-size:12.5px;color:#c05f00"><i class="ti ti-info-circle" style="margin-right:5px" aria-hidden="true"></i>Verification typically takes 24–48 hours after document upload.</div>
+      </div>
+    </div>
+
+    <!-- ═══ PROFILE ═══ -->
+    <div id="screen-profile" class="screen">
+      <div class="profile-header">
+        <div class="profile-pic"><i class="ti ti-user" aria-hidden="true"></i></div>
+        <div>
+          <div class="profile-name">Masroor Ahmed</div>
+          <div class="profile-sub">Defense View Phase 2, Karachi, Pakistan</div>
+          <div class="profile-sub" style="margin-top:2px">SP23-BSCS-0065 · MAJU</div>
+          <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+            <span class="verify-badge verified"><i class="ti ti-shield-check" aria-hidden="true"></i>Verified Driver</span>
+            <span class="verify-badge"><i class="ti ti-star" aria-hidden="true"></i>4.8 Rating</span>
+          </div>
+        </div>
+        <button class="btn btn-outline" style="margin-left:auto;border-color:rgba(255,255,255,.4);color:#fff;align-self:flex-start"><i class="ti ti-edit" aria-hidden="true"></i>Edit</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="card">
+          <div class="card-title"><i class="ti ti-user" aria-hidden="true"></i>Personal Info</div>
+          <div class="form-group"><label>Full Name</label><input value="Masroor Ahmed"></div>
+          <div class="form-group"><label>Phone</label><input value="03023269118"></div>
+          <div class="form-group"><label>Email</label><input value="kalwarmas@gmail.com" type="email"></div>
+          <div class="form-group"><label>City</label>
+            <select><option selected>Karachi</option><option>Lahore</option><option>Islamabad</option></select>
+          </div>
+          <div class="form-group"><label>Gender</label>
+            <div class="filter-row" style="margin:6px 0 0">
+              <div class="ftag active" onclick="toggle(this)"><i class="ti ti-gender-male" aria-hidden="true"></i>Male</div>
+              <div class="ftag" onclick="toggle(this)"><i class="ti ti-gender-female" aria-hidden="true"></i>Female</div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm">Save Changes</button>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-car" aria-hidden="true"></i>Vehicle Info</div>
+          <div class="form-group"><label>Vehicle Make</label><input value="Toyota"></div>
+          <div class="form-group"><label>Model</label><input value="Corolla 2019"></div>
+          <div class="form-group"><label>Reg. Number</label><input value="KHI-1234"></div>
+          <div class="form-group"><label>Color</label><input value="White"></div>
+          <div class="form-group"><label>Type</label>
+            <div class="veh-grid" style="grid-template-columns:1fr 1fr 1fr;margin-top:4px">
+              <div class="veh-card sel" onclick="selVeh(this)" style="padding:8px"><div class="veh-icon" style="font-size:20px">🚗</div><div class="veh-name">Car</div></div>
+              <div class="veh-card" onclick="selVeh(this)" style="padding:8px"><div class="veh-icon" style="font-size:20px">🏍️</div><div class="veh-name">Bike</div></div>
+              <div class="veh-card" onclick="selVeh(this)" style="padding:8px"><div class="veh-icon" style="font-size:20px">🚐</div><div class="veh-name">Van</div></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;background:var(--blue-light);padding:10px 12px;border-radius:var(--radius-sm);font-size:12.5px;color:var(--blue);margin-top:4px"><i class="ti ti-shield-check" aria-hidden="true"></i>Vehicle documents verified</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><i class="ti ti-star" aria-hidden="true"></i>Ratings & Reviews</div>
+        <div class="rating-row">
+          <div><div class="rating-big">4.8</div><div class="stars">★★★★★</div><div class="rating-count">18 reviews</div></div>
+          <div style="flex:1;padding-left:20px;display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:16px;color:var(--text2)">5★</span><div style="flex:1;background:var(--bg);border-radius:4px;height:7px"><div style="width:75%;height:100%;background:var(--orange);border-radius:4px"></div></div><span style="width:24px;color:var(--text3)">75%</span></div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:16px;color:var(--text2)">4★</span><div style="flex:1;background:var(--bg);border-radius:4px;height:7px"><div style="width:20%;height:100%;background:var(--orange);border-radius:4px"></div></div><span style="width:24px;color:var(--text3)">20%</span></div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:16px;color:var(--text2)">3★</span><div style="flex:1;background:var(--bg);border-radius:4px;height:7px"><div style="width:5%;height:100%;background:var(--orange);border-radius:4px"></div></div><span style="width:24px;color:var(--text3)">5%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ LOGIN ═══ -->
+    <div id="screen-login" class="screen">
+      <div class="auth-wrap">
+        <div class="auth-logo">
+          <div class="auth-logo-img"><img src="logo.png" alt="Carvo logo"></div>
+          <div class="auth-title">Welcome to Carvo</div>
+          <div class="auth-sub">Carpool · Travel · Share</div>
+        </div>
+        <div class="card">
+          <div class="type-toggle" style="margin-bottom:18px;width:100%">
+            <div class="type-btn active" onclick="switchType(this,'login-form')" style="flex:1;text-align:center">Login</div>
+            <div class="type-btn" onclick="switchType(this,'register-form')" style="flex:1;text-align:center">Register</div>
+          </div>
+          <div id="login-form">
+            <div class="form-group"><label>Phone or Email</label><input placeholder="03xxxxxxxxx or email"></div>
+            <div class="form-group"><label>Password</label><input type="password" placeholder="Enter password"></div>
+            <button class="btn btn-primary btn-block" style="margin-bottom:10px"><i class="ti ti-login" aria-hidden="true"></i>Login</button>
+            <div style="text-align:center;font-size:12px;color:var(--blue);cursor:pointer;margin-bottom:12px">Forgot password?</div>
+            <div class="divider">or continue with</div>
+            <div class="social-btn"><i class="ti ti-brand-google" style="color:#c0392b;font-size:18px" aria-hidden="true"></i>Google</div>
+          </div>
+          <div id="register-form" class="hidden">
+            <div class="form-group"><label>I want to</label>
+              <div class="filter-row" style="margin:6px 0">
+                <div class="ftag active" onclick="toggle(this)"><i class="ti ti-car" aria-hidden="true"></i>Offer Rides (Driver)</div>
+                <div class="ftag" onclick="toggle(this)"><i class="ti ti-user" aria-hidden="true"></i>Book Rides (Passenger)</div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group" style="margin:0"><label>First Name</label><input placeholder="First name"></div>
+              <div class="form-group" style="margin:0"><label>Last Name</label><input placeholder="Last name"></div>
+            </div>
+            <div class="form-group"><label>Phone Number</label><input placeholder="+92 3xxxxxxxxx" type="tel"></div>
+            <div class="form-group"><label>Email</label><input placeholder="your@email.com" type="email"></div>
+            <div class="form-group"><label>Password</label><input type="password" placeholder="Create strong password"></div>
+            <div class="form-group"><label>City</label>
+              <select><option value="">Select your city</option><option>Karachi</option><option>Lahore</option><option>Islamabad</option><option>Rawalpindi</option><option>Peshawar</option><option>Quetta</option><option>Faisalabad</option><option>Multan</option></select>
+            </div>
+            <div class="form-group"><label>Gender</label>
+              <div class="filter-row" style="margin:4px 0">
+                <div class="ftag" onclick="toggle(this)"><i class="ti ti-gender-male" aria-hidden="true"></i>Male</div>
+                <div class="ftag" onclick="toggle(this)"><i class="ti ti-gender-female" aria-hidden="true"></i>Female</div>
+              </div>
+            </div>
+            <div style="font-size:11.5px;color:var(--text3);margin-bottom:12px">By registering you agree to our Terms & Privacy Policy.</div>
+            <button class="btn btn-orange btn-block"><i class="ti ti-user-plus" aria-hidden="true"></i>Create Account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+const titles={dashboard:'Dashboard',find:'Find a Ride',start:'Start a Ride',myrides:'My Rides',wallet:'Wallet',business:'Business',verify:'Verify Profile',profile:'My Profile',login:'Login / Register'};
+
+function nav(id, el){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const s=document.getElementById('screen-'+id);
+  if(s)s.classList.add('active');
+  document.getElementById('page-title').textContent=titles[id]||id;
+  if(el){
+    document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+    el.classList.add('active');
+  }
+}
+
+function switchTab(el, panelId){
+  const tabs=el.parentElement.querySelectorAll('.tab');
+  tabs.forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  const panels=el.parentElement.nextElementSibling;
+  const all=el.closest('.screen')||el.closest('.card');
+  all.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  const target=document.getElementById(panelId);
+  if(target)target.classList.add('active');
+}
+
+function switchType(el, formId){
+  const btns=el.parentElement.querySelectorAll('.type-btn');
+  btns.forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  const parent=el.closest('.card')||el.closest('.screen-start');
+  if(!parent)return;
+  if(formId==='driver'||formId==='rider'){
+    const df=document.getElementById('driver-form'),rf=document.getElementById('rider-form');
+    if(df&&rf){df.classList.toggle('hidden',formId==='rider');rf.classList.toggle('hidden',formId==='driver');}
+  } else {
+    ['login-form','register-form'].forEach(id=>{const e=document.getElementById(id);if(e)e.classList.add('hidden');});
+    const t=document.getElementById(formId);
+    if(t)t.classList.remove('hidden');
+  }
+}
+
+function toggle(el){el.classList.toggle('active');}
+
+function selVeh(el){
+  el.closest('.veh-grid').querySelectorAll('.veh-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function selSeat(el){
+  el.closest('.seats').querySelectorAll('.seat').forEach(s=>s.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+const days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const vals=[1800,2400,1200,3200,2800,1600,900];
+const maxV=Math.max(...vals);
+const bc=document.getElementById('bar-chart');
+const bl=document.getElementById('bar-labels');
+if(bc&&bl){
+  days.forEach((d,i)=>{
+    const col=document.createElement('div');col.className='bar-col';
+    const fill=document.createElement('div');fill.className='bar-fill';
+    fill.style.height=Math.round((vals[i]/maxV)*90)+'px';
+    fill.style.background=i===3?'var(--orange)':'var(--blue)';
+    col.appendChild(fill);bc.appendChild(col);
+    const lbl=document.createElement('div');lbl.className='bar-lbl';lbl.textContent=d;
+    bl.appendChild(lbl);
+  });
+}
+</script>
