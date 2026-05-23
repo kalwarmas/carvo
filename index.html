@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="description" content="Carvo - Smart AI-Powered Carpooling Platform for Pakistan">
+<title>Carvo - Smart Carpooling Platform</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
 * {
   margin: 0;
@@ -32,6 +40,7 @@ body {
 .hidden {
   display: none !important;
 }
+
 
 /* ── SIDEBAR ── */
 .app{display:flex;min-height:100vh}
@@ -296,7 +305,536 @@ body {
   .type-toggle{flex-wrap:wrap}
   .auth-wrap{margin:20px 12px}
 }
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE ENHANCEMENTS - PROPER RESPONSIVE DESIGN
+   ═══════════════════════════════════════════════════════════ */
+
+/* Mobile Menu Overlay & Button */
+.mobile-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 998;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-overlay.show {
+  display: block;
+  opacity: 1;
+}
+
+.mobile-menu-btn {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  font-size: 26px;
+  cursor: pointer;
+  z-index: 1001;
+  box-shadow: 0 6px 24px rgba(26, 74, 138, 0.4);
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.mobile-menu-btn:active {
+  transform: scale(0.95);
+}
+
+/* Tablet & Desktop (768px+) */
+@media (min-width: 768px) {
+  .mobile-menu-btn {display: none !important;}
+  .mobile-overlay {display: none !important;}
+}
+
+/* Mobile & Tablet (max 768px) */
+@media (max-width: 768px) {
+  /* Show mobile menu button */
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  /* Sidebar becomes slide-in drawer */
+  .sidebar {
+    position: fixed;
+    left: -100%;
+    top: 0;
+    bottom: 0;
+    width: 260px;
+    z-index: 999;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: none;
+  }
+
+  .sidebar.mobile-open {
+    left: 0;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Main content takes full width */
+  .app {
+    display: block;
+  }
+
+  .main {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  /* Topbar responsive */
+  .topbar {
+    padding: 12px 16px;
+    gap: 10px;
+  }
+
+  .topbar-title {
+    font-size: 16px;
+    flex: 1 1 100%;
+    order: 3;
+    margin-top: 8px;
+  }
+
+  .topbar-city {
+    font-size: 11.5px;
+    padding: 6px 12px;
+  }
+
+  .topbar-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 17px;
+  }
+
+  /* Content area */
+  .content {
+    padding: 16px;
+    padding-bottom: 100px; /* Space for floating button */
+  }
+
+  /* Stats grid - 2 columns */
+  .stat-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .stat-card {
+    padding: 14px;
+  }
+
+  .stat-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 19px;
+    margin-bottom: 10px;
+  }
+
+  .stat-val {
+    font-size: 20px;
+  }
+
+  .stat-lbl {
+    font-size: 11.5px;
+  }
+
+  .stat-trend {
+    font-size: 10.5px;
+  }
+
+  /* Cards */
+  .card {
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+
+  .card-title {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  /* Form rows stack */
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  /* Buttons */
+  .btn {
+    padding: 10px 18px;
+    font-size: 13.5px;
+  }
+
+  .btn-sm {
+    padding: 7px 14px;
+    font-size: 12.5px;
+  }
+
+  /* Grids that should stack */
+  #screen-dashboard > div[style*="grid-template-columns:1fr 1fr"],
+  #screen-profile > div[style*="grid-template-columns:1fr 1fr"],
+  #screen-business > div[style*="grid-template-columns:1fr 1fr"] {
+    display: flex !important;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* Vehicle grid */
+  .veh-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .veh-card {
+    padding: 12px 10px;
+  }
+
+  .veh-icon {
+    font-size: 26px;
+  }
+
+  /* City grid */
+  .city-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  /* Filter tags */
+  .filter-row {
+    gap: 8px;
+  }
+
+  .ftag {
+    padding: 5px 12px;
+    font-size: 12.5px;
+  }
+
+  /* Ride cards */
+  .ride-card {
+    padding: 12px 14px;
+    gap: 12px;
+  }
+
+  .ride-avatar {
+    width: 42px;
+    height: 42px;
+    font-size: 20px;
+  }
+
+  .ride-route {
+    font-size: 13.5px;
+  }
+
+  .ride-meta {
+    font-size: 11.5px;
+    gap: 8px;
+  }
+
+  .ride-price {
+    font-size: 15px;
+  }
+
+  /* Profile header */
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px 16px;
+  }
+
+  .profile-pic {
+    width: 64px;
+    height: 64px;
+    font-size: 27px;
+  }
+
+  .profile-name {
+    font-size: 19px;
+  }
+
+  /* Wallet */
+  .wallet-hero {
+    padding: 20px 16px;
+  }
+
+  .wallet-bal {
+    font-size: 30px;
+  }
+
+  .wallet-btn {
+    font-size: 12.5px;
+    padding: 8px 14px;
+  }
+
+  /* Tabs */
+  .tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab {
+    white-space: nowrap;
+    padding: 8px 16px;
+    font-size: 12.5px;
+  }
+
+  /* Map */
+  .map-area {
+    height: 170px;
+  }
+
+  .map-label {
+    font-size: 10.5px;
+    padding: 4px 10px;
+  }
+
+  .map-eta {
+    font-size: 10.5px;
+    padding: 4px 10px;
+  }
+
+  /* Auth screens */
+  .auth-wrap {
+    padding: 0 16px;
+    margin: 24px auto;
+  }
+
+  .auth-logo-img {
+    width: 58px;
+    height: 58px;
+  }
+
+  .auth-title {
+    font-size: 21px;
+  }
+
+  /* Type toggle */
+  .type-toggle {
+    width: 100%;
+  }
+
+  .type-btn {
+    padding: 7px 16px;
+    font-size: 12.5px;
+  }
+
+  /* Seats */
+  .seats {
+    gap: 8px;
+  }
+
+  .seat {
+    width: 34px;
+    height: 34px;
+    font-size: 17px;
+  }
+
+  /* Transactions */
+  .txn-row {
+    padding: 10px 0;
+  }
+
+  .txn-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 16px;
+  }
+
+  .txn-name {
+    font-size: 13px;
+  }
+
+  .txn-date {
+    font-size: 11px;
+  }
+
+  .txn-amt {
+    font-size: 13.5px;
+  }
+
+  /* Steps */
+  .step-item {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .step-num {
+    width: 30px;
+    height: 30px;
+    font-size: 12.5px;
+  }
+
+  .step-label {
+    font-size: 13px;
+  }
+
+  .step-sub {
+    font-size: 11.5px;
+  }
+
+  .step-cta {
+    margin-left: 0 !important;
+    margin-top: 8px;
+  }
+
+  /* Section heads */
+  .section-head-title {
+    font-size: 14.5px;
+  }
+
+  .see-all {
+    font-size: 12px;
+  }
+}
+
+/* Small Mobile (max 480px) */
+@media (max-width: 480px) {
+  /* Stats - single column */
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Hide city selector on very small screens */
+  .topbar-city {
+    display: none;
+  }
+
+  .topbar-title {
+    margin-top: 0;
+    width: auto;
+    flex: 1;
+  }
+
+  /* Wallet actions stack */
+  .wallet-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .wallet-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* City grid */
+  .city-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Vehicle grid */
+  .veh-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Filter tags */
+  .filter-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ftag {
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* Type toggle */
+  .type-toggle {
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .type-btn {
+    width: 100%;
+    text-align: center;
+    padding: 9px;
+  }
+
+  /* Mobile menu button smaller */
+  .mobile-menu-btn {
+    width: 56px;
+    height: 56px;
+    bottom: 20px;
+    right: 20px;
+    font-size: 24px;
+  }
+
+  /* Content padding */
+  .content {
+    padding: 14px;
+    padding-bottom: 90px;
+  }
+
+  /* Smaller cards */
+  .card {
+    padding: 14px;
+  }
+
+  /* Ride card adjustments */
+  .ride-card {
+    padding: 12px;
+  }
+}
+
+/* Landscape mode adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+  .content {
+    padding: 12px;
+    padding-bottom: 80px;
+  }
+
+  .map-area {
+    height: 150px;
+  }
+
+  .profile-header {
+    padding: 16px;
+  }
+
+  .wallet-hero {
+    padding: 16px;
+  }
+
+  .mobile-menu-btn {
+    width: 50px;
+    height: 50px;
+    bottom: 16px;
+    right: 16px;
+  }
+}
+
+/* Prevent body scroll when sidebar is open on mobile */
+body.sidebar-open {
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  body.sidebar-open {
+    overflow: hidden;
+  }
+}
 </style>
+</head>
+<body>
+
+<!-- Mobile Overlay -->
+<div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileSidebar()"></div>
+
+<!-- Mobile Menu Button -->
+<button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileSidebar()" aria-label="Toggle menu">
+  <i class="ti ti-menu-2"></i>
+</button>
 
 <div class="app">
 
@@ -847,4 +1385,75 @@ if(bc&&bl){
     bl.appendChild(lbl);
   });
 }
+
+// ═══════════════════════════════════════════════════════════
+// MOBILE SIDEBAR TOGGLE FUNCTIONS
+// ═══════════════════════════════════════════════════════════
+
+function toggleMobileSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('mobileOverlay');
+  const btn = document.getElementById('mobileMenuBtn');
+  const body = document.body;
+  
+  const isOpen = sidebar.classList.contains('mobile-open');
+  
+  if (isOpen) {
+    closeMobileSidebar();
+  } else {
+    openMobileSidebar();
+  }
+}
+
+function openMobileSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('mobileOverlay');
+  const btn = document.getElementById('mobileMenuBtn');
+  const body = document.body;
+  
+  sidebar.classList.add('mobile-open');
+  overlay.classList.add('show');
+  body.classList.add('sidebar-open');
+  btn.innerHTML = '<i class="ti ti-x"></i>';
+}
+
+function closeMobileSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('mobileOverlay');
+  const btn = document.getElementById('mobileMenuBtn');
+  const body = document.body;
+  
+  sidebar.classList.remove('mobile-open');
+  overlay.classList.remove('show');
+  body.classList.remove('sidebar-open');
+  btn.innerHTML = '<i class="ti ti-menu-2"></i>';
+}
+
+// Enhanced nav function - close sidebar on mobile after navigation
+const originalNav = nav;
+nav = function(id, el) {
+  originalNav(id, el);
+  // Close mobile sidebar after navigation on mobile
+  if (window.innerWidth <= 768) {
+    closeMobileSidebar();
+  }
+};
+
+// Close sidebar on window resize to desktop
+window.addEventListener('resize', function() {
+  if (window.innerWidth > 768) {
+    closeMobileSidebar();
+  }
+});
+
+// Prevent body scroll on mobile when sidebar is open
+document.addEventListener('touchmove', function(e) {
+  if (document.body.classList.contains('sidebar-open') && 
+      !document.querySelector('.sidebar').contains(e.target)) {
+    e.preventDefault();
+  }
+}, { passive: false });
+
 </script>
+</body>
+</html>
