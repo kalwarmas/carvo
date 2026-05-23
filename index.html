@@ -243,12 +243,58 @@ body {
 .rating-count{font-size:12px;color:var(--text3);margin-top:2px}
 
 /* ── RESPONSIVE ── */
-@media(max-width:700px){
-  .sidebar{width:56px}.sb-item span,.sb-logo-text,.sb-logo-tag,.sb-pname,.sb-role,.sb-section{display:none}
-  .sb-item{padding:12px;justify-content:center}.sb-badge{display:none}
-  .stat-grid{grid-template-columns:1fr 1fr}.biz-stat-grid{grid-template-columns:1fr 1fr}
-  .veh-grid{grid-template-columns:1fr 1fr}.city-grid{grid-template-columns:repeat(3,1fr)}
+@media(max-width:1100px){
+  .app{flex-direction:column}
+  .sidebar{width:100%;min-height:auto}
+  .topbar{padding:12px 18px;flex-wrap:wrap;gap:10px}
+  .topbar-title{flex:1 1 100%}
+  .content{padding:18px}
+  .stat-grid,.biz-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .card{margin-bottom:16px}
+  .ride-card{flex-wrap:wrap;align-items:flex-start}
+  .ride-card > div:last-child{width:100%;text-align:left;margin-top:10px}
+  .wallet-actions{flex-wrap:wrap}
+  .tabs{flex-wrap:wrap}
+  .profile-header{flex-direction:column;align-items:flex-start}
+  .profile-header button{width:100%;margin-left:0}
+}
+
+@media(max-width:900px){
+  .topbar{padding:12px 14px}
+  .topbar-city{display:none}
+  .stat-grid,.biz-stat-grid{grid-template-columns:1fr}
+  .veh-grid{grid-template-columns:repeat(2,1fr)}
+  .city-grid{grid-template-columns:repeat(2,1fr)}
   .form-row{grid-template-columns:1fr}
+  .filter-row{justify-content:center}
+  .section-head{flex-direction:column;align-items:flex-start;gap:8px}
+  .section-head .see-all{margin-top:4px}
+  .card-title{font-size:15px}
+  .map-area{height:170px}
+}
+
+@media(max-width:700px){
+  .sidebar{width:100%;position:relative;min-height:auto}
+  .sb-logo{justify-content:center}
+  .sb-item span,.sb-logo-text,.sb-logo-tag,.sb-pname,.sb-role,.sb-section{display:none}
+  .sb-item{padding:12px;justify-content:center;min-width:56px}
+  .sb-badge{display:none}
+  .sb-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:10px 0}
+  .topbar{gap:8px}
+  .topbar-btn{width:36px;height:36px}
+  .stat-grid{grid-template-columns:1fr}
+  .biz-stat-grid{grid-template-columns:1fr}
+  .veh-grid{grid-template-columns:1fr 1fr}
+  .city-grid{grid-template-columns:repeat(2,1fr)}
+  .ride-card{flex-direction:column;align-items:flex-start}
+  .ride-card .ride-info{width:100%}
+  .ride-card > div:last-child{width:100%;text-align:left;margin-top:10px}
+  .wallet-actions{flex-direction:column}
+  .tabs{flex-direction:column;gap:8px}
+  .profile-header{padding:18px;gap:14px}
+  .profile-header button{width:100%;margin-left:0}
+  .type-toggle{flex-wrap:wrap}
+  .auth-wrap{margin:20px 12px}
 }
 </style>
 
